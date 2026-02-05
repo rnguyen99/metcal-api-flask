@@ -1,0 +1,17 @@
+## Plan: Python JWT-Secured API for Asset Management on IIS
+
+Build a Flask web API with JWT authentication for full asset CRUD operations, using bcrypt password hashing, connecting to the existing SQLite database, with CORS support, comprehensive logging, and error handling, configured for Windows IIS deployment.
+
+### Steps
+
+1. **Create Flask application structure** with main.py as entry point including CORS middleware allowing all origins, plus models.py for Pydantic schemas, auth.py for JWT logic, database.py for SQLite operations, config.py for environment settings, and logger.py for logging configuration.
+
+2. **Implement JWT authentication system** in auth.py with bcrypt password hashing, token generation with 24-hour expiration, bearer token validation dependency, and `POST /api/token` endpoint returning access tokens or 401 errors.
+
+3. **Create database initialization script** in init_db.py to check if `asset` and `user` tables exist in asset.db, create only if missing, and seed admin user (username: `admin`, password: `password` bcrypt-hashed) if `user` table is empty.
+
+4. **Build asset API endpoints** in main.py with `GET /api/assets`, `GET /api/asset/{id}`, `POST /api/asset`, and `PUT /api/asset/{id}`, all JWT-protected, with request/response logging middleware and proper HTTP status codes (200, 201, 400, 401, 404).
+
+5. **Configure comprehensive logging** in logger.py with file and console handlers logging to logs/api.log, capturing request details (method, path, IP, user), response status, execution time, and errors with stack traces.
+
+6. **Configure IIS deployment** with web.config for httphandler handler, requirements.txt including Flask, PyJWT, bcrypt, waitress, python-multipart, and .env.example for JWT secret key and log level configuration.
